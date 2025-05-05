@@ -1,0 +1,63 @@
+/fastapi_project
+├── main.py
+├── routers
+│   ├── items.py
+│   └── users.py
+
+---------------------------------------------------------------------------------------------------------------------------
+# main.py
+from fastapi import FastAPI
+from routers import items, users
+
+app = FastAPI()
+
+# Include routers
+app.include_router(items.router)
+app.include_router(users.router)
+
+@app.get("/")
+def read_root():
+    return {"message": "Welcome to FastAPI with modular routing"}
+
+---------------------------------------------------------------------------------------------------------------------------
+# routers/items.py
+from fastapi import APIRouter
+
+router = APIRouter(
+    prefix="/items",
+    tags=["items"]
+)
+
+@router.get("/")
+def read_items():
+    return {"message": "List of items"}
+
+@router.get("/{item_id}")
+def read_item(item_id: int):
+    return {"item_id": item_id}
+
+---------------------------------------------------------------------------------------------------------------------------
+# routers/users.py
+from fastapi import APIRouter
+
+router = APIRouter(
+    prefix="/users",
+    tags=["users"]
+)
+
+@router.get("/")
+def read_users():
+    return {"message": "List of users"}
+
+@router.get("/{user_id}")
+def read_user(user_id: int):
+    return {"user_id": user_id}
+
+---------------------------------------------------------------------------------------------------------------------------
+Access these URLs
+•	GET / → Welcome message
+•	GET /items/ → List of items
+•	GET /items/42 → Item with ID 42
+•	GET /users/ → List of users
+•	GET /users/99 → User with ID 99
+
